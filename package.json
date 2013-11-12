@@ -1,0 +1,26 @@
+{
+  "name": "npm-lazy-mirror",
+  "version": "0.0.1",
+  "description": "Lazy Mirroring for npmjs.org",
+  "main": "index.js",
+  "bin": { "npm-lazy-mirror": "./bin/npm-lazy-mirror"},
+  "scripts": {
+    "start": "./bin/npm-lazy-mirror",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "lactate": "0.13.12",
+    "request": "~2.27.0",
+    "async": "~0.2.9",
+    "mkdirp": "~0.3.5",
+    "lodash": "~2.3.0",
+    "optimist": "~0.6.0"
+  },
+  "keywords": [
+    "npm",
+    "mirror",
+    "lazy"
+  ],
+  "author": "Jamie Paton <jamiep@activestate.com>",
+  "license": "MIT"
+}
