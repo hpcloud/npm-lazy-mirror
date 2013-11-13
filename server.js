@@ -14,13 +14,14 @@ var config = {};
 /* Local server options */
 config.server_port = Argv.p || Argv.port || Config.server_port || 2000;
 config.server_address = Argv.a || Argv.address || Config.server_address || 'localhost';
+config.bind_addresss = Argv.b || Argv.bind_address || Config.bind_address || '127.0.0.1';
 
 /* Upstream Registry */
 config.upstream_host = Argv.upstream_host || Config.upstream_host || 'registry.npmjs.org';
 config.upstream_port = Argv.upstream_port || Config.upstream_port || 80;
 
 /* Caching options */
-config.cache_dir = Argv.cache_dir || Config.cache_dir || '/tmp/files';
+config.cache_dir = Argv.c || Argv.cache_dir || Config.cache_dir || '/tmp/files';
 config.cache_expiry = Argv.cache_expiry || Config.cache_expiry || 24 * 60 * 60 * 1000; // 24 Hours
 config.cache_mem = Argv.cache_mem || Config.cache_mem || 200; // MB
 config.cache_options = {  cache: {
@@ -180,7 +181,7 @@ var server = Http.createServer(function (req, res) {
 });
 
 server.listen(config.server_port, config.server_address, function(){
-    console.log('Lazy mirror is listening @ ' + config.server_address + ':' + config.server_port);
+    console.log('Lazy mirror is listening @ ' + config.bind_address + ':' + config.server_port + ' External host: ' + config.server_address);
 });
 
 
