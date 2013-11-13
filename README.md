@@ -3,7 +3,7 @@
 
 ## About
 
-This package provides a lazy mirroring options for those that:
+This package provides a lazy mirroring option for those that:
 
   * Don't want to mirror the entire couchDB for npmjs.org
   * Don't want to setup cron jobs for those tasks
@@ -32,6 +32,7 @@ Then point your local npm config to the lazy mirror:
   * Caching all metadata to disk
   * Mirror serves files (200MB max by default) from memory, with an LRU.
   * Upstream resources are fetched on the fly from the remote registry, the fetching, storing and serving to the client all happen in the same request.
+  * Configurable with other npm registries.
 
 ## Caveats
 
@@ -41,7 +42,6 @@ or the worst case scenario is to remove the local `node_modules` and reinstall f
 
 ## Todo
 
-  * HTTPS
   * Indexing for `/all/-/` requests
   * Automatic disk pruning of stale resources
   * Resource locking to prevent multiple requests to the upstream registry
