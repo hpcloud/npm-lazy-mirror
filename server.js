@@ -2,7 +2,9 @@ var _ = require('lodash');
 var Argv = require('optimist').argv;
 var Cache = require('./lib/cache');
 var Config = require('./config/config.json');
+var Fs = require('fs');
 var Http = require('http');
+var Https = require('https');
 var Lactate = require('lactate');
 var Package = require('./lib/package');
 var Path = require('path');
@@ -14,7 +16,15 @@ var config = {};
 /* Local server options */
 config.server_port = Argv.p || Argv.port || Config.server_port || 2000;
 config.server_address = Argv.a || Argv.address || Config.server_address || 'localhost';
-config.bind_addresss = Argv.b || Argv.bind_address || Config.bind_address || '127.0.0.1';
+config.bind_address = Argv.b || Argv.bind_address || Config.bind_address || '127.0.0.1';
+config.http_enabled = Argv.http_enabled || Config.http_enabled || true;
+
+/* Local server HTTPS options */
+config.https_port = Argv.https_port || Config.https_port || 443;
+config.https_enabled = Argv.https_enabled || Config.https_enabled || false;
+
+config.https_key = Argv.https_key || Config.https_key || null;
+config.https_cert = Argv.https_cert || Config.https_cert || null;
 
 /* Upstream Registry */
 config.upstream_host = Argv.upstream_host || Config.upstream_host || 'registry.npmjs.org';
@@ -144,11 +154,8 @@ var servePackageTarball = function(req, res) {
     });
 };
 
-/**
- * The main HTTP server
- */
-var server = Http.createServer(function (req, res) {
 
+var serveRequest = function(req, res) {
     req.headers.host = config.upstream_host;
 
     console.log(req.method + ' ' + req.url);
@@ -177,11 +184,38 @@ var server = Http.createServer(function (req, res) {
     } else {
         registry.proxyUpstream(req, res);
     }
+};
 
-});
+/**
+ * The main HTTP server
+ */
+if (config.http_enabled) {
+    var http_server = Http.createServer(serveRequest);
 
-server.listen(config.server_port, config.server_address, function(){
-    console.log('Lazy mirror is listening @ ' + config.bind_address + ':' + config.server_port + ' External host: ' + config.server_address);
-});
+    http_server.listen(config.server_port, config.server_address, function(){
+        console.log('Lazy mirror (HTTP) is listening @ ' + config.bind_address + ':' + config.server_port + ' External host: ' + config.server_address);
+    });
+}
+
+/**
+ * The main HTTPS server
+ */
+if (config.https_enabled) {
+
+    if (!config.https_key || !config.https_cert) {
+        throw new Error('Missing https_cert or http_key option');
+    }
+
+    var https_options = {
+        key: Fs.readFileSync(config.https_key),
+        cert: Fs.readFileSync(config.https_cert),
+    };
+
+    var https_server = Https.createServer(https_options, serveRequest);
+
+    https_server.listen(config.server_port, config.server_address, function(){
+        console.log('Lazy mirror (HTTPS) is listening @ ' + config.bind_address + ':' + config.https_port + ' External host: ' + config.server_address);
+    });
+}
 
 
