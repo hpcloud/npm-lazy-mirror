@@ -13,7 +13,14 @@ This package provides a lazy mirroring options for those that:
 ## Install
 
   * `npm install -g npm-lazy-mirror`
-  * `npm-lazy-mirror -p <port> -a <remote_address> --cache-dir /npm-data`
+
+## Run
+
+  * `npm-lazy-mirror -p <port> -a <remote_address> -b <bind_address> --cache-dir /npm-data`
+
+Your `remote_address` is important, as it is the address used when re-writing
+tarball URLs in the metadata. It's certainly always best to use a DNS entry here,
+rather than an IP.
 
 Then point your local npm config to the lazy mirror:
 
