@@ -1,6 +1,6 @@
 {
   "name": "npm-lazy-mirror",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Lazy Mirroring for npmjs.org",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "./bin/npm-lazy-mirror",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter list test/runner.js"
   },
   "dependencies": {
     "lactate": "0.13.12",
@@ -18,6 +18,10 @@
     "lodash": "~2.3.0",
     "optimist": "~0.6.0",
     "log": "~1.4.0"
+  },
+  "devDependencies": {
+    "mocha": "",
+    "supertest": ""
   },
   "keywords": [
     "npm",

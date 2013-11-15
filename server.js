@@ -29,31 +29,24 @@ Config.cache_server.notFound(function(req, res) {
     registry.proxyUpstream(req, res);
 });
 
+
 /**
- * Handle generic errors
+ * Primary HTTP/HTTPS request dispatcher
  *
- * @param {Object} req - Http.req
- * @param {Object} res - Http.res
- * @param {Object} err - err object
+ * @param {Object} req - HTTP.req
+ * @param {Object} res - HTTP.res
  */
-var internalErr = function(req, res, err) {
-    log.error(err);
-    res.statusCode = 500;
-    res.end('Internal server error ' + err);
-};
-
-
 var serveRequest = function(req, res) {
     req.headers.host = Config.upstream_host;
 
     log.info(req.method + ' ' + req.url);
 
     /* /package/latest */
-    if (req.url.match(/^\/[a-z0-9_-].*?\/latest\/?$/)) {
+    if (req.url.match(/^\/[a-z0-9_-]+?\/latest\/?$/)) {
         Handlers.serveLatestPackageMeta(req, res, Config);
 
     /* /package/<semver> */
-    } else if (req.url.match(/^\/[a-z0-9_-].*?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
+    } else if (req.url.match(/^\/[a-z0-9_-]+?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
         Handlers.servePackageVersionMeta(req, res, Config);
 
     /* /-/all/ */
@@ -61,11 +54,11 @@ var serveRequest = function(req, res) {
         registry.proxyUpstream(req, res);
 
     /* /-/<package name>-<version.tgz */
-    } else if (req.url.match(/^\/[a-z0-9_-].*?\/-\/.*\.tgz/)) {
+    } else if (req.url.match(/^\/[a-z0-9_-]+?\/-\/.*\.tgz/)) {
         Handlers.servePackageTarball(req, res, Config);
 
     /* /package */
-    } else if (req.url.match(/^\/[a-z0-9_-].*?$/)) {
+    } else if (req.url.match(/^\/[a-z0-9_-]+?$/)) {
         Handlers.servePackageMeta(req, res, Config);
 
     /* void */
