@@ -59,6 +59,8 @@ To serve the tarballs, the mirror rewrites the location of the tarball for a
 package in the metadata. This means that clients who use this mirror must be continue to do so,
 or the worst case scenario is to remove the local `node_modules` and reinstall from the new registry.
 
+Additionally, you cannot use this mirror for publishing / user login.
+
 ## Todo
 
   * Indexing for `/all/-/` requests

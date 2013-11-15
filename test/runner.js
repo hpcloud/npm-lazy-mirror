@@ -1,13 +1,9 @@
+var Helpers = require('./helpers');
+
 var HOST = process.env.TEST_HOST || 'localhost';
 var PORT = process.env.TEST_PORT || 2000;
 
 var request = require('supertest');
-
-function handleRes(err) {
-    if (err) {
-        throw err;
-    }
-}
 
 request = request('http://' + HOST + ':' + PORT);
 
@@ -73,6 +69,15 @@ describe('GET //does/not/exist', function(){
     it('responds 404 on non-existing package', function(done) {
         request.get('//does/not/exist')
         .expect(404, done);
+    });
+});
+
+var randomModule = Helpers.getRandomModule();
+
+describe('GET /' + randomModule, function(){
+    it('returns a random module metadata', function(done) {
+        request.get('/' + randomModule)
+        .expect(200, done);
     });
 });
 
