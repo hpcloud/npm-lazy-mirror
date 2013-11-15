@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var AsyncCache = require('async-cache');
 var Cache = require('./lib/cache');
 var Config = require('./lib/config');
 var Fs = require('fs');
@@ -29,6 +30,15 @@ Config.cache_server.notFound(function(req, res) {
     registry.proxyUpstream(req, res);
 });
 
+/* Global async disk cache */
+Config.cache.fsStats = new AsyncCache({
+    max: 5000,
+    maxAge: Config.cache_expiry,
+    load: function(path, cb) {
+        var cache = new Cache(Config);
+        cache.existsDisk(path, cb);
+    }
+});
 
 /**
  * Primary HTTP/HTTPS request dispatcher
