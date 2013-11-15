@@ -73,7 +73,7 @@ var serveRequest = function(req, res) {
 if (Config.http_enabled) {
     var http_server = Http.createServer(serveRequest);
 
-    http_server.listen(Config.server_port, Config.server_address, function(){
+    http_server.listen(Config.server_port, Config.bind_address, function(){
         log.info('Lazy mirror (HTTP) is listening @ ' + Config.bind_address + ':' + Config.server_port + ' External host: ' + Config.server_address);
     });
 }
@@ -94,7 +94,7 @@ if (Config.https_enabled) {
 
     var https_server = Https.createServer(https_options, serveRequest);
 
-    https_server.listen(Config.server_port, Config.server_address, function(){
+    https_server.listen(Config.server_port, Config.bind_address, function(){
         log.info('Lazy mirror (HTTPS) is listening @ ' + Config.bind_address + ':' + Config.https_port + ' External host: ' + Config.server_address);
     });
 }
