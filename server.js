@@ -6,6 +6,7 @@ var Fs = require('fs');
 var Http = require('http');
 var Https = require('https');
 var Lactate = require('lactate');
+var Log = require('log');
 var Package = require('./lib/package');
 var Path = require('path');
 var Registry = require('./lib/registry');
@@ -18,6 +19,11 @@ config.server_port = Argv.p || Argv.port || Config.server_port || 2000;
 config.server_address = Argv.a || Argv.address || Config.server_address || 'localhost';
 config.bind_address = Argv.b || Argv.bind_address || Config.bind_address || '127.0.0.1';
 config.http_enabled = Argv.http_enabled || Config.http_enabled || true;
+
+/* Logging */
+config.log_level = Argv.log_level || Config.log_level || 'info';
+var log = new Log(config.log_level);
+
 
 /* Local server HTTPS options */
 config.https_port = Argv.https_port || Config.https_port || 443;
@@ -65,7 +71,7 @@ var registry = new Registry(config);
  * @param {Object} err - err object
  */
 var internalErr = function(req, res, err) {
-    console.error(err);
+    log.error(err);
     res.statusCode = 500;
     res.end('Internal server error ' + err);
 };
@@ -158,15 +164,15 @@ var servePackageTarball = function(req, res) {
 var serveRequest = function(req, res) {
     req.headers.host = config.upstream_host;
 
-    console.log(req.method + ' ' + req.url);
-
-    /* /package/<semver> */
-    if (req.url.match(/^\/[a-z0-9_-].*?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
-        servePackageVersionMeta(req, res);
+    log.info(req.method + ' ' + req.url);
 
     /* /package/latest */
-    } else if (req.url.match(/^\/[a-z0-9_-].*?\/latest$/)) {
-        serverLatestPackageMeta(req, res);
+    if (req.url.match(/^\/[a-z0-9_-].*?\/latest\/?$/)) {
+        serveLatestPackageMeta(req, res);
+
+    /* /package/<semver> */
+    } else if (req.url.match(/^\/[a-z0-9_-].*?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
+        servePackageVersionMeta(req, res);
 
     /* /-/all/ */
     } else if (req.url.match(/\/-\/all\/.*/)) {
@@ -193,7 +199,7 @@ if (config.http_enabled) {
     var http_server = Http.createServer(serveRequest);
 
     http_server.listen(config.server_port, config.server_address, function(){
-        console.log('Lazy mirror (HTTP) is listening @ ' + config.bind_address + ':' + config.server_port + ' External host: ' + config.server_address);
+        log.info('Lazy mirror (HTTP) is listening @ ' + config.bind_address + ':' + config.server_port + ' External host: ' + config.server_address);
     });
 }
 
@@ -214,7 +220,7 @@ if (config.https_enabled) {
     var https_server = Https.createServer(https_options, serveRequest);
 
     https_server.listen(config.server_port, config.server_address, function(){
-        console.log('Lazy mirror (HTTPS) is listening @ ' + config.bind_address + ':' + config.https_port + ' External host: ' + config.server_address);
+        log.info('Lazy mirror (HTTPS) is listening @ ' + config.bind_address + ':' + config.https_port + ' External host: ' + config.server_address);
     });
 }
 
