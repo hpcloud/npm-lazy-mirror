@@ -24,7 +24,7 @@ rather than an IP.
 
 Then point your local npm config to the lazy mirror:
 
-   npm config set registry http://localhost:8080/
+    npm config set registry http://localhost:8080/
 
 ## Features
 
