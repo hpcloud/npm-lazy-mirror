@@ -51,6 +51,9 @@ describe('GET /multiparty/2.2.0', function(){
 
 describe('GET /multiparty/-/multiparty-2.2.0.tgz', function(){
     it('gets the multiparty 2.2.0 tarball', function(done) {
+
+        this.timeout(10000);
+
         request.get('/multiparty/-/multiparty-2.2.0.tgz')
         .expect(200)
         .expect('Cache-Control', /max-age/)
@@ -72,6 +75,13 @@ describe('GET //does/not/exist', function(){
     });
 });
 
+
+describe('GET /doesnotexist', function(){
+    it('responds 404 on non-existing package', function(done) {
+        request.get('/doesnotexists')
+        .expect(404, done);
+    });
+});
 var randomModule = Helpers.getRandomModule();
 
 describe('GET /' + randomModule, function(){

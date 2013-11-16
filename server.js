@@ -17,7 +17,9 @@ var Url = require('url');
 var registry = new Registry(Config);
 
 /* Generic logger */
-var log = new Log(Config.log_level);
+var log = new Log('debug'||Config.log_level);
+
+Config.log = log;
 
 /* HTTP asset caching server */
 Config.cache_server = Lactate.dir(Config.cache_dir, Config.cache_options);
@@ -35,6 +37,9 @@ Config.cache.fsStats = new AsyncCache({
     max: 5000,
     maxAge: Config.cache_expiry,
     load: function(path, cb) {
+
+        log.debug('Cache MISS: ', path);
+
         var cache = new Cache(Config);
         cache.existsDisk(path, cb);
     }

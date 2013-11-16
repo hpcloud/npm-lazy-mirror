@@ -41,17 +41,15 @@ Run `npm-lazy-mirror -h` to see a full list of options.
   * Mirror serves files (200MB max by default) from memory, with an LRU.
   * Upstream resources are fetched on the fly from the remote registry, the fetching, storing and serving to the client all happen in the same request.
   * Configurable with other npm registries.
-  * It's Fast and stands up under load. Here we are running a standard `wrk` benchmark for the entire package metadata for `superdata` (232k file) (core i7 / 16GB ram, only 1 core utilized and using ~125MB of memory during the benchmark):
+  * It's Fast and stands up under load. Expect 5000+ req/s with one core.
 
-    -> % wrk http://localhost:2000/supertest
-    Running 10s test @ http://localhost:2000/supertest
-      2 threads and 10 connections
-      Thread Stats   Avg      Stdev     Max   +/- Stdev
-        Latency     3.50ms    4.70ms  21.79ms   92.61%
-        Req/Sec     2.18k   642.27     2.78k    88.04%
-      41101 requests in 10.00s, 2.39GB read
-    Requests/sec:   4110.05
-    Transfer/sec:    244.88MB
+A cold run installing `express` takes ~12 seconds (fetching from upstream registry on-the-fly):
+
+    npm install express  2.44s user 0.81s system 27% cpu 11.769 total
+
+A warm run after all `express` assets are locally cached takes ~3 seconds:
+
+    npm install express  2.43s user 0.78s system 115% cpu 2.768 total
 
 ## Caveats
 
