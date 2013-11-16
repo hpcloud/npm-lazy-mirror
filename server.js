@@ -17,7 +17,7 @@ var Url = require('url');
 var registry = new Registry(Config);
 
 /* Generic logger */
-var log = new Log('debug'||Config.log_level);
+var log = new Log(Config.log_level);
 
 Config.log = log;
 
