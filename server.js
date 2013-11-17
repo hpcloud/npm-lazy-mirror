@@ -13,13 +13,13 @@ var Path = require('path');
 var Registry = require('./lib/registry');
 var Url = require('url');
 
-/* Upstream Proxy */
-var registry = new Registry(Config);
-
 /* Generic logger */
 var log = new Log(Config.log_level);
 
 Config.log = log;
+
+/* Upstream Proxy */
+var registry = new Registry(Config);
 
 /* HTTP asset caching server */
 Config.cache_server = Lactate.dir(Config.cache_dir, Config.cache_options);
