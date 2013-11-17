@@ -1,6 +1,6 @@
 {
   "name": "npm-lazy-mirror",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "Lazy Mirroring for npmjs.org",
   "main": "index.js",
   "bin": {
