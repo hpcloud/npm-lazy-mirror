@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# Copyright (c) ActiveState 2013 - ALL RIGHTS RESERVED.
+#
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 node $DIR/../lib/node_modules/npm-lazy-mirror/server.js $@
 

@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) ActiveState 2013 - ALL RIGHTS RESERVED.
+ */
+
 var Helpers = {};
 
 Helpers.randomModules = [ 'express', 'supertest', 'mocha', 'hapi'];

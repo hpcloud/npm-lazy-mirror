@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) ActiveState 2013 - ALL RIGHTS RESERVED.
+ */
+
 var Helpers = require('./helpers');
 
 var HOST = process.env.TEST_HOST || 'localhost';
