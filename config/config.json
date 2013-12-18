@@ -2,8 +2,6 @@
     "server_port": 2000,
     "server_address": "localhost",
 
-    "http_enabled": true,
-
     "upstream_host": "registry.npmjs.org",
     "upstream_port": 80,
 
