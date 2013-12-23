@@ -1,5 +1,5 @@
 {
-    "server_port": 2000,
+    "http_port": 2000,
     "server_address": "localhost",
 
     "upstream_host": "registry.npmjs.org",

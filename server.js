@@ -88,8 +88,8 @@ var serveRequest = function(req, res) {
 if (Config.http_enabled) {
     var http_server = Http.createServer(serveRequest);
 
-    http_server.listen(Config.server_port, Config.bind_address, function(){
-        log.info('Lazy mirror (HTTP) is listening @ ' + Config.bind_address + ':' + Config.server_port + ' External host: ' + Config.server_address);
+    http_server.listen(Config.http_port, Config.bind_address, function(){
+        log.info('Lazy mirror (HTTP) is listening @ ' + Config.bind_address + ':' + Config.http_port + ' External host: ' + Config.server_address);
     });
 }
 
