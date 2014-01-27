@@ -61,11 +61,11 @@ var serveRequest = function(req, res) {
     log.info(req.method + ' ' + req.url);
 
     /* /package/latest */
-    if (req.url.match(/^\/[a-z0-9_-]+?\/latest\/?$/)) {
+    if (req.url.match(/^\/[_-\w.]+?\/latest\/?$/)) {
         Handlers.serveLatestPackageMeta(req, res, Config);
 
     /* /package/<semver> */
-    } else if (req.url.match(/^\/[a-z0-9_-]+?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
+    } else if (req.url.match(/^\/[_-\w.]+?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
         Handlers.servePackageVersionMeta(req, res, Config);
 
     /* /-/all/ */
@@ -73,11 +73,11 @@ var serveRequest = function(req, res) {
         registry.proxyUpstream(req, res);
 
     /* /-/<package name>-<version.tgz */
-    } else if (req.url.match(/^\/[a-z0-9_-]+?\/-\/.*\.tgz/)) {
+    } else if (req.url.match(/^\/[_-\w.]+?\/-\/.*\.tgz/)) {
         Handlers.servePackageTarball(req, res, Config);
 
     /* /package */
-    } else if (req.url.match(/^\/[a-z0-9_-]+?$/)) {
+    } else if (req.url.match(/^\/[_-\w.]+?$/)) {
         Handlers.servePackageMeta(req, res, Config);
 
     /* void */
