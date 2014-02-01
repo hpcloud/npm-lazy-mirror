@@ -95,4 +95,18 @@ describe('GET /' + randomModule, function(){
     });
 });
 
+describe('GET /raw-body/-/raw-body-1.1.2.tgz', function(){
+    it('returns a tarball for package with multiple hyphens', function(done) {
+        request.get('/' + randomModule)
+        .expect(200, done);
+    });
+});
+
+describe('GET /dateformat/1.0.7-1.2.3', function(){
+    it('returns metadata for a package with multiple versions', function(done) {
+        request.get('/' + randomModule)
+        .expect(200, done);
+    });
+});
+
 

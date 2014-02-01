@@ -72,7 +72,7 @@ var serveRequest = function(req, res) {
     } else if (req.url.match(/\/-\/all\/.*/)) {
         registry.proxyUpstream(req, res);
 
-    /* /-/<package name>-<version.tgz */
+    /* /-/<package name>-<version.tgz> */
     } else if (req.url.match(/^\/[_-\w.]+?\/-\/.*\.tgz/)) {
         Handlers.servePackageTarball(req, res, Config);
 
