@@ -79,7 +79,6 @@ describe('GET //does/not/exist', function(){
     });
 });
 
-
 describe('GET /doesnotexist', function(){
     it('responds 404 on non-existing package', function(done) {
         request.get('/doesnotexists')
@@ -97,14 +96,14 @@ describe('GET /' + randomModule, function(){
 
 describe('GET /raw-body/-/raw-body-1.1.2.tgz', function(){
     it('returns a tarball for package with multiple hyphens', function(done) {
-        request.get('/' + randomModule)
+        request.get('/raw-body/-/raw-body-1.1.2.tgz')
         .expect(200, done);
     });
 });
 
 describe('GET /dateformat/1.0.7-1.2.3', function(){
     it('returns metadata for a package with multiple versions', function(done) {
-        request.get('/' + randomModule)
+        request.get('/dateformat/1.0.7-1.2.3')
         .expect(200, done);
     });
 });
