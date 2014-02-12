@@ -104,8 +104,10 @@ describe('GET /raw-body/-/raw-body-1.1.2.tgz', function(){
 describe('GET /dateformat/1.0.7-1.2.3', function(){
     it('returns metadata for a package with multiple versions', function(done) {
         request.get('/dateformat/1.0.7-1.2.3')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(Helpers.tarballPointsToMirror)
         .expect(200, done);
     });
 });
-
 

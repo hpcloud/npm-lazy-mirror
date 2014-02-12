@@ -65,7 +65,7 @@ var serveRequest = function(req, res) {
         Handlers.serveLatestPackageMeta(req, res, Config);
 
     /* /package/<semver> */
-    } else if (req.url.match(/^\/[_-\w.]+?\/[0-9]+\.[0-9]+\.[0-9]+$/)) {
+    } else if (req.url.match(/^\/[_-\w.]+?\/[0-9]+\.[0-9]+\.[0-9]+/)) {
         Handlers.servePackageVersionMeta(req, res, Config);
 
     /* /-/all/ */
