@@ -1,6 +1,6 @@
 {
   "name": "npm-lazy-mirror",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Lazy Mirroring for npmjs.org",
   "main": "index.js",
   "bin": {
@@ -16,18 +16,19 @@
   },
   "scripts": {
     "start": "./bin/npm-lazy-mirror",
-    "test": "mocha --reporter list test/runner.js"
+    "test": "mocha --reporter list test/runner.js test/npm.js"
   },
   "dependencies": {
+    "async": "0.2.10",
+    "async-cache": "0.1.4",
     "lactate": "0.13.12",
-    "request": "~2.27.0",
-    "async": "~0.2.9",
-    "mkdirp": "~0.3.5",
-    "lodash": "~2.3.0",
-    "optimist": "~0.6.0",
-    "log": "~1.4.0",
-    "async-cache": "~0.1.3",
-    "npm": "~1.3.2"
+    "lodash": "2.4.1",
+    "log": "1.4.0",
+    "mkdirp": "0.3.5",
+    "npm": "1.4.4",
+    "optimist": "0.6.1",
+    "request": "2.34.0",
+    "semver": "2.2.1"
   },
   "devDependencies": {
     "mocha": "",

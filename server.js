@@ -1,24 +1,24 @@
 /**
- * Copyright (c) ActiveState 2013 - ALL RIGHTS RESERVED.
+ * Copyright (c) ActiveState 2014 - ALL RIGHTS RESERVED.
  */
 
-var _ = require('lodash');
+'use strict';
+
+var Async = require('async');
 var AsyncCache = require('async-cache');
 var Cache = require('./lib/cache');
 var Config = require('./lib/config');
+var Constants = require('./lib/constants');
 var Fs = require('fs');
 var Handlers = require('./lib/handlers');
 var Http = require('http');
 var Https = require('https');
 var Lactate = require('lactate');
 var Log = require('log');
-var Package = require('./lib/package');
-var Path = require('path');
 var Registry = require('./lib/registry');
-var Url = require('url');
 
 /* Generic logger */
-var log = new Log(Config.log_level);
+var log = new Log(Config.logLevel);
 
 Config.log = log;
 
@@ -26,26 +26,47 @@ Config.log = log;
 var registry = new Registry(Config);
 
 /* HTTP asset caching server */
-Config.cache_server = Lactate.dir(Config.cache_dir, Config.cache_options);
+Config.cacheServer = Lactate.dir(Config.cacheDir, Config.cacheOptions);
 
 /**
  * If the file cannot be found locally, proxy to the upstream registry as
  * a last resort
  */
-Config.cache_server.notFound(function(req, res) {
+Config.cacheServer.notFound(function (req, res) {
     registry.proxyUpstream(req, res);
 });
 
 /* Global async disk cache */
 Config.cache.fsStats = new AsyncCache({
     max: 5000,
-    maxAge: Config.cache_expiry,
+    maxAge: Config.cacheExpiry,
     load: function(path, cb) {
 
-        log.debug('Cache MISS: ', path);
+        log.info('Cache MISS: ', path);
 
         var cache = new Cache(Config);
-        cache.existsDisk(path, cb);
+        Async.waterfall([
+            function (done) {
+                cache.existsDisk(path, done);
+            },
+            function (exists, done) {
+                if (exists) {
+                    cache.diskExpired(path, done);
+                } else {
+                    done(null, null, null);
+                }
+            },
+            function (expired, stats, done) {
+                if (!expired && stats) {
+                    done(null, Constants.CACHE_VALID);
+                } else {
+                    done(null, Constants.CACHE_NOT_EXIST);
+                }
+            }
+        ],
+        function (err, valid) {
+            cb(err, valid);
+        });
     }
 });
 
@@ -55,8 +76,8 @@ Config.cache.fsStats = new AsyncCache({
  * @param {Object} req - HTTP.req
  * @param {Object} res - HTTP.res
  */
-var serveRequest = function(req, res) {
-    req.headers.host = Config.upstream_host;
+var serveRequest = function (req, res) {
+    req.headers.host = Config.upstreamHost;
 
     log.info(req.method + ' ' + req.url);
 
@@ -89,32 +110,32 @@ var serveRequest = function(req, res) {
 /**
  * The main HTTP server
  */
-if (Config.http_enabled) {
-    var http_server = Http.createServer(serveRequest);
+if (Config.httpEnabled) {
+    var httpServer = Http.createServer(serveRequest);
 
-    http_server.listen(Config.http_port, Config.bind_address, function(){
-        log.info('Lazy mirror (HTTP) is listening @ ' + Config.bind_address + ':' + Config.http_port + ' External host: ' + Config.server_address);
+    httpServer.listen(Config.httpPort, Config.bindAddress, function () {
+        log.info('Lazy mirror (HTTP) is listening @ ' + Config.bindAddress + ':' + Config.httpPort + ' External host: ' + Config.serverAddress);
     });
 }
 
 /**
  * The main HTTPS server
  */
-if (Config.https_enabled) {
+if (Config.httpsEnabled) {
 
-    if (!Config.https_key || !Config.https_cert) {
+    if (!Config.httpsKey || !Config.httpsCert) {
         throw new Error('Missing https_cert or http_key option');
     }
 
-    var https_options = {
-        key: Fs.readFileSync(Config.https_key),
-        cert: Fs.readFileSync(Config.https_cert),
+    var httpsOptions = {
+        key: Fs.readFileSync(Config.httpsKey),
+        cert: Fs.readFileSync(Config.httpsCert),
     };
 
-    var https_server = Https.createServer(https_options, serveRequest);
+    var httpsServer = Https.createServer(httpsOptions, serveRequest);
 
-    https_server.listen(Config.https_port, Config.bind_address, function(){
-        log.info('Lazy mirror (HTTPS) is listening @ ' + Config.bind_address + ':' + Config.https_port + ' External host: ' + Config.server_address);
+    httpsServer.listen(Config.httpsPort, Config.bindAddress, function () {
+        log.info('Lazy mirror (HTTPS) is listening @ ' + Config.bindAddress + ':' + Config.httpsPort + ' External host: ' + Config.serverAddress);
     });
 }
 

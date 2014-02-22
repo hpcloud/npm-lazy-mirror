@@ -1,0 +1,29 @@
+{
+    "http_port": 2000,
+    "https_port": 2443,
+    "http_enabled": true,
+    "https_enabled": false,
+    "https_key": "<path>",
+    "https_cert": "<path>",
+
+    "http_proxy": null,
+    "https_proxy": null,
+
+    "real_external_port": 2000,
+    "server_address": "localhost",
+    "bind_address": "127.0.0.1",
+
+    "log_level": "info",
+
+    "package_blacklist": "../example/package-blacklist",
+    "permit_stale_resources": true,
+
+    "upstream_host": "registry.npmjs.org",
+    "upstream_port": "443",
+    "upstream_use_https": true,
+    "upstream_verify_ssl": true,
+
+    "cache_expiry": 320000,
+    "cache_dir": "/tmp/npm-lazy",
+    "cache_mem": 512
+}

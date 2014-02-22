@@ -1,5 +1,7 @@
-# Lazy mirroring for NPM
+#npm-lazy-mirror
 ---
+
+A lazy mirroring local npm server.
 
 ## About
 
@@ -16,13 +18,23 @@ This package provides a lazy mirroring option for those that:
 
 ## Run
 
+With CLI flags:
+
   * `npm-lazy-mirror -p <port> -a <remote_address> -b <bind_address> --cache-dir /npm-data`
 
-Your `remote_address` is important, as it is the address used when re-writing
+With a JSON configuration:
+
+  * `npm-lazy-mirror -C /path/to/config,json`
+
+  See `example/server-config.json` for usage.
+
+**Note:** Your `remote_address` configuration is important, as it is the address used when re-writing
 tarball URLs in the metadata. It's certainly always best to use a DNS entry here,
 rather than an IP.
 
-Then point your local npm config to the lazy mirror (permanent):
+## Client configuration
+
+Simply point your local npm config to the lazy mirror (permanent):
 
     npm config set registry http://localhost:2000/
 
@@ -36,11 +48,13 @@ Run `npm-lazy-mirror -h` to see a full list of options.
 
 ## Features
 
-  * Caching all tarballs to disk
-  * Caching all metadata to disk
-  * Mirror serves files (200MB max by default) from memory, with an LRU.
+  * Caches all tarball / JSON metadata to disk
+  * Mirror serves files (200MB max by default) from memory, with a configurable LRU cache.
+  * Ability to blacklist packages by semantic versioning specification
+  * Option to serve stale resources while the upstream registry is offline
   * Upstream resources are fetched on the fly from the remote registry, the fetching, storing and serving to the client all happen in the same request.
-  * Configurable with other npm registries.
+  * Configurable with custom npm registries.
+  * HTTP/S proxy support
   * It's Fast and stands up under load. Expect 5000+ req/s with one core.
 
 A cold run installing `express` takes ~12 seconds (fetching from upstream registry on-the-fly):
@@ -51,17 +65,7 @@ A warm run after all `express` assets are locally cached takes ~3 seconds:
 
     npm install express  2.43s user 0.78s system 115% cpu 2.768 total
 
-## Caveats
+## Implementation Caveats
 
-To serve the tarballs, the mirror rewrites the location of the tarball for a
-package in the metadata. This means that clients who use this mirror must be continue to do so,
-or the worst case scenario is to remove the local `node_modules` and reinstall from the new registry.
-
-Additionally, you cannot use this mirror for publishing / user login.
-
-## Todo
-
-  * Indexing for `/all/-/` requests
-  * Automatic disk pruning of stale resources
-  * Resource locking to prevent multiple requests to the upstream registry
-
+You cannot use this mirror for publishing modules or user management, such
+requests will be forwarded to the upstream registry for processing.
