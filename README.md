@@ -3,6 +3,8 @@
 
 A lazy mirroring local npm server.
 
+[![Build Status](https://travis-ci.org/ActiveState/npm-lazy-mirror.svg?branch=master)](https://travis-ci.org/ActiveState/npm-lazy-mirror)
+
 ## About
 
 This package provides a lazy mirroring option for those that:
