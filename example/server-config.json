@@ -22,6 +22,7 @@
     "upstream_port": "443",
     "upstream_use_https": true,
     "upstream_verify_ssl": true,
+    "upstream_db_path": "/",
 
     "cache_expiry": 320000,
     "cache_dir": "/tmp/npm-lazy",
