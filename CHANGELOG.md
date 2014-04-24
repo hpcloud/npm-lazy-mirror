@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+- Fixed issue with config.json file not being found and issue where upstreamPort
+  wasn't being honored ( #10 )
+- Fixes an issue with Lactate cache expiry options leading to excessive CPU
+  usage ( #11 )
+
 ## 0.3.0
 - Large cleanup and refactor for new feature implementations.
 - Now have the ability to serve stale resources from the cache while they cannot

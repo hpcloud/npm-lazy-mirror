@@ -1,6 +1,6 @@
 {
   "name": "npm-lazy-mirror",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Lazy Mirroring for npmjs.org",
   "main": "index.js",
   "bin": {
@@ -19,13 +19,13 @@
     "test": "mocha --reporter list test/runner.js test/npm.js"
   },
   "dependencies": {
-    "async": "0.2.10",
-    "async-cache": "0.1.4",
+    "async": "0.7.0",
+    "async-cache": "0.1.5",
     "lactate": "0.13.12",
     "lodash": "2.4.1",
     "log": "1.4.0",
     "mkdirp": "0.3.5",
-    "npm": "1.4.4",
+    "npm": "1.4.7",
     "optimist": "0.6.1",
     "request": "2.34.0",
     "semver": "2.2.1"
@@ -40,7 +40,8 @@
   "keywords": [
     "npm",
     "mirror",
-    "lazy"
+    "lazy",
+    "cache"
   ],
   "author": "Jamie Paton <jamiep@activestate.com>",
   "license": "MIT"
