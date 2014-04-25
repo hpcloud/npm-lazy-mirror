@@ -3,7 +3,9 @@
     "server_address": "localhost",
 
     "upstream_host": "registry.npmjs.org",
-    "upstream_port": 80,
+    "upstream_port": 443,
+    "upstream_use_https": true,
+    "upstream_verify_ssl": true,
 
     "cache_dir": "/tmp/npm-lazy",
     "cache_mem": 200
