@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+- Fixed a typo with stale resource config (#13)
+- Make HTTPS the default upstream registry transport (#12)
+
 ## 0.3.1
 - Fixed issue with config.json file not being found and issue where upstreamPort
   wasn't being honored ( #10 )
@@ -17,7 +21,7 @@
 - Fix a bug where non 200 upstream registry responses were written to disk.
 - Other minor bug fixes.
 
-# # 0.2.3
+## 0.2.3
 - Fix packages with multiple versions not being routed to the appropriate
   handler.
 
