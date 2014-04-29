@@ -22,7 +22,7 @@ This package provides a lazy mirroring option for those that:
 
 With CLI flags:
 
-  * `npm-lazy-mirror -p <port> -a <remote_address> -b <bind_address> --cache-dir /npm-data`
+  * `npm-lazy-mirror -p <port> -a <remote_address> -b <bind_address> --cache_dir /npm-data`
 
 With a JSON configuration:
 
